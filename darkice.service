@@ -1,0 +1,19 @@
+[Unit]
+Description=DarkIce live audio streamer
+Documentation=http://www.darkice.org/ man:darkice(1) man:darkice.cfg(5)
+After=network-online.target
+
+[Service]
+Restart=always
+RestartSec=3
+Type=simple
+ExecStart=/usr/bin/darkice -c /etc/darkice.cfg
+
+# DarkIce uses POSIX real-time scheduling to keep up with sound card input.
+# Let systemd change the CPU scheduler policy and priority beforhand, so that
+# root privilegs can be avoided.
+CPUSchedulingPolicy=fifo
+CPUSchedulingPriority=4
+
+[Install]
+WantedBy=multi-user.target
